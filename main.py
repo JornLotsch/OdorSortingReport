@@ -6,7 +6,7 @@ Created on Sun Feb 13 16:13:42 2022
 @author: joern
 """
 
-%cd "/home/joern/Aktuell/RiechenVerduennungAbstand/08AnalyseProgramme/Python"
+%cd "/home/joern/Aktuell/RiechenVerduennungAbstand/08AnalyseProgramme/Python/OdorSortingReport"
 
 import RiechenVerduennungAbstand_readandexploredata
 
