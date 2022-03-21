@@ -6,6 +6,8 @@ Created on Tue Feb  8 19:09:44 2022
 @author: joern
 """
 
+# %% imports
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
