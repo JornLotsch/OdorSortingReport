@@ -23,6 +23,7 @@ from ABCanalysis import ABC_analysis
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.pipeline import Pipeline
+from sklearn.calibration import CalibratedClassifierCV
 
 from RiechenVerduennungAbstand_correlationsPCA import DataForCorrelationPCA, PCA_features
 from RiechenVerduennungAbstand_cluster_explanation import dfClusterOlfdiagSex
@@ -635,72 +636,88 @@ for train_index, test_index in rskf.split(X_train, y_train):
     
     X_train_validation, X_test_validation, y_train_validation, y_test_validation = train_test_split(
         X_test, y_test, test_size=0.8)
+    y_test_validation_num = [0 if x == 1 else 1 for x in y_test_validation]
 
     # Full feature set
     lsvc = LinearSVC(C = C_lsvm, penalty = penalty_SVM, dual = dual_svm, loss = loss_svm, tol = tol_svm, max_iter=10000)
     lsvc.fit(X_train_FS, y_train_FS)
+    clf = CalibratedClassifierCV(lsvc) 
+    clf.fit(X_train, y_train)
     y_pred = lsvc.predict(X_test_validation)
+    y_pred_proba = clf.predict_proba(X_test_validation)
     BA_lsvc_fullFeatureSet.append(balanced_accuracy_score(y_test_validation, y_pred))
-    ROC_lsvc_fullFeatureSet.append(roc_auc_score(y_test_validation, y_pred))
+    ROC_lsvc_fullFeatureSet.append(roc_auc_score(y_test_validation_num, y_pred_proba[:,[1]]))
 
     forest = RandomForestClassifier(random_state=0, bootstrap=bootstrap_rf,  max_depth=max_depth_rf, max_features=max_features_rf, 
                                     min_samples_leaf=min_samples_leaf_rf, min_samples_split=min_samples_split_rf, n_estimators=n_estimators_rf)
     forest.fit(X_train_FS, y_train_FS)
     y_pred = forest.predict(X_test_validation)
+    y_pred_proba = forest.predict_proba(X_test_validation)
     BA_RF_fullFeatureSet.append(balanced_accuracy_score(y_test_validation, y_pred))
-    ROC_RF_fullFeatureSet.append(roc_auc_score(y_test_validation, y_pred))
+    ROC_RF_fullFeatureSet.append(roc_auc_score(y_test_validation_num, y_pred_proba[:,[1]]))
 
     LogReg = LogisticRegression(C=C_LogReg,  penalty=penalty_LogReg, solver= solver_LogReg, tol=tol_LogReg, max_iter=10000,random_state=0)
     LogReg.fit(X_train_FS, y_train_FS)
     y_pred = LogReg.predict(X_test_validation)
+    y_pred_proba = LogReg.predict_proba(X_test_validation)
     BA_LogReg_fullFeatureSet.append(balanced_accuracy_score(y_test_validation, y_pred))
-    ROC_LogReg_fullFeatureSet.append(roc_auc_score(y_test_validation, y_pred))
+    ROC_LogReg_fullFeatureSet.append(roc_auc_score(y_test_validation_num, y_pred_proba[:,[1]]))
 
     # Reduced feature set
     X_train_FS_reduced = X_train_FS[reduced_feature_names]
     X_test_validation_reduced = X_test_validation[reduced_feature_names]
     
     lsvc = LinearSVC(C = C_lsvm, penalty = penalty_SVM, dual = dual_svm, loss = loss_svm, tol = tol_svm, max_iter=10000)
-    lsvc.fit(X_train_FS_reduced, y_train_FS)
-    y_pred = lsvc.predict(X_test_validation_reduced)
+    lsvc.fit(X_train_FS, y_train_FS)
+    clf = CalibratedClassifierCV(lsvc) 
+    clf.fit(X_train, y_train)
+    y_pred = lsvc.predict(X_test_validation)
+    y_pred_proba = clf.predict_proba(X_test_validation)
     BA_lsvc_reducedFeatureSet.append(balanced_accuracy_score(y_test_validation, y_pred))
-    ROC_lsvc_reducedFeatureSet.append(roc_auc_score(y_test_validation, y_pred))
+    ROC_lsvc_reducedFeatureSet.append(roc_auc_score(y_test_validation_num, y_pred_proba[:,[1]]))
 
     forest = RandomForestClassifier(random_state=0, bootstrap=bootstrap_rf,  max_depth=max_depth_rf, max_features=max_features_rf, 
                                     min_samples_leaf=min_samples_leaf_rf, min_samples_split=min_samples_split_rf, n_estimators=n_estimators_rf)
     forest.fit(X_train_FS_reduced, y_train_FS)
     y_pred = forest.predict(X_test_validation_reduced)
+    y_pred_proba = forest.predict_proba(X_test_validation)
     BA_RF_reducedFeatureSet.append(balanced_accuracy_score(y_test_validation, y_pred))
-    ROC_RF_reducedFeatureSet.append(roc_auc_score(y_test_validation, y_pred))
+    ROC_RF_reducedFeatureSet.append(roc_auc_score(y_test_validation_num, y_pred_proba[:,[1]]))
 
     LogReg = LogisticRegression(C=C_LogReg,  penalty=penalty_LogReg, solver= solver_LogReg, tol=tol_LogReg, max_iter=10000,random_state=0)
     LogReg.fit(X_train_FS_reduced, y_train_FS)
     y_pred = LogReg.predict(X_test_validation_reduced)
+    y_pred_proba = LogReg.predict_proba(X_test_validation)
     BA_LogReg_reducedFeatureSet.append(balanced_accuracy_score(y_test_validation, y_pred))
-    ROC_LogReg_reducedFeatureSet.append(roc_auc_score(y_test_validation, y_pred))
+    ROC_LogReg_reducedFeatureSet.append(roc_auc_score(y_test_validation_num, y_pred_proba[:,[1]]))
     
     # Sparse feature set
     X_train_FS_sparse = X_train_FS[["Score EUG", "Score PEA"]]
     X_test_validation_sparse = X_test_validation[["Score EUG", "Score PEA"]]
     
     lsvc = LinearSVC(C = C_lsvm, penalty = penalty_SVM, dual = dual_svm, loss = loss_svm, tol = tol_svm, max_iter=10000)
-    lsvc.fit(X_train_FS_sparse, y_train_FS)
-    y_pred = lsvc.predict(X_test_validation_sparse)
+    lsvc.fit(X_train_FS, y_train_FS)
+    clf = CalibratedClassifierCV(lsvc) 
+    clf.fit(X_train, y_train)
+    y_pred = lsvc.predict(X_test_validation)
+    y_pred_proba = clf.predict_proba(X_test_validation)
     BA_lsvc_sparseFeatureSet.append(balanced_accuracy_score(y_test_validation, y_pred))
-    ROC_lsvc_sparseFeatureSet.append(roc_auc_score(y_test_validation, y_pred))
+    ROC_lsvc_sparseFeatureSet.append(roc_auc_score(y_test_validation_num, y_pred_proba[:,[1]]))
 
     forest = RandomForestClassifier(random_state=0, bootstrap=bootstrap_rf,  max_depth=max_depth_rf, max_features=max_features_rf, 
                                     min_samples_leaf=min_samples_leaf_rf, min_samples_split=min_samples_split_rf, n_estimators=n_estimators_rf)
     forest.fit(X_train_FS_sparse, y_train_FS)
     y_pred = forest.predict(X_test_validation_sparse)
+    y_pred_proba = forest.predict_proba(X_test_validation)
     BA_RF_sparseFeatureSet.append(balanced_accuracy_score(y_test_validation, y_pred))
-    ROC_RF_sparseFeatureSet.append(roc_auc_score(y_test_validation, y_pred))
+    ROC_RF_sparseFeatureSet.append(roc_auc_score(y_test_validation_num, y_pred_proba[:,[1]]))
 
     LogReg = LogisticRegression(C=C_LogReg,  penalty=penalty_LogReg, solver= solver_LogReg, tol=tol_LogReg, max_iter=10000,random_state=0)
     LogReg.fit(X_train_FS_sparse, y_train_FS)
     y_pred = LogReg.predict(X_test_validation_sparse)
+    y_pred_proba = LogReg.predict_proba(X_test_validation)
     BA_LogReg_sparseFeatureSet.append(balanced_accuracy_score(y_test_validation, y_pred))
-    ROC_LogReg_sparseFeatureSet.append(roc_auc_score(y_test_validation, y_pred))
+    ROC_LogReg_sparseFeatureSet.append(roc_auc_score(y_test_validation_num, y_pred_proba[:,[1]]))
 
 
 CV_results_BA = pd.DataFrame(np.column_stack([BA_lsvc_fullFeatureSet, BA_RF_fullFeatureSet, BA_LogReg_fullFeatureSet, 

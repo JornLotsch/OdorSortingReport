@@ -23,7 +23,7 @@ from RiechenVerduennungAbstand_readandexploredata import dfRiechenVerduennungAbs
 from RiechenVerduennungAbstand_readandexploredata import groups_of_analyzed_variables
 
 
-# %% Funtions
+# %% Functions
 def calculate_pvalues(df):
     df = df.dropna()._get_numeric_data()
     dfcols = pd.DataFrame(columns=df.columns)
