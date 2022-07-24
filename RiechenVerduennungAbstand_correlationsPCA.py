@@ -35,6 +35,7 @@ def calculate_pvalues(df):
 
 # %% Data
 
+
 DataForCorrelationPCA = FinalDataSetPreprocessed.copy()
 
 # %% Correlation matrix
@@ -81,7 +82,7 @@ np.nanmax(CorrelationsR**2)
 # %% PCA
 
 PCA_data = DataForCorrelationPCA.copy()
-PCA_data.drop(['Age', 'BMI^-2'], axis = 1, inplace = True)
+PCA_data.drop(['Age', 'BMI^-2'], axis=1, inplace=True)
 PCA_data = pd.DataFrame(StandardScaler().fit_transform(
     PCA_data), columns=PCA_data .columns)
 

@@ -23,7 +23,7 @@ from explore_tukey_lop import explore_tukey_lop
 alternativeOderCounting = False
 
 # %% Read data
-pfad_o = "/home/joern/Aktuell/RiechenVerduennungAbstand/"
+pfad_o = "/home/joern/Dokumente/RiechenVerduennungAbstand/"
 pfad_u1 = "09Originale/"
 filename = "data_anne_huster_dec_2021.xlsx"
 sheetname = "data"
@@ -142,7 +142,8 @@ dfRiechenVerduennungAbstand_o = dfRiechenVerduennungAbstand_o.mask(dfRiechenVerd
 # dfRiechenVerduennungAbstand_o["KG in kg"] = dfRiechenVerduennungAbstand["KG in kg"]
 dfRiechenVerduennungAbstand_o.isna().sum()
 
-PercentNA = dfRiechenVerduennungAbstand_o.isna().sum() / dfRiechenVerduennungAbstand_o.shape[0] * 100
+PercentNA = dfRiechenVerduennungAbstand_o.isna().sum(
+) / dfRiechenVerduennungAbstand_o.shape[0] * 100
 fig = plt.figure(figsize=(20, 10))
 ax = sns.barplot(x=PercentNA.index, y=PercentNA,  color="dodgerblue")
 ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
@@ -171,7 +172,9 @@ kds.plot_feature_importance(dataset=0, annot=True,
 
 # %% (Re)Create composed scores
 
+
 def f(x): return 0 if x != i1 else 1
+
 
 variables_Sorting_PEA = groups_of_nongenerated_variables["Odor_sorting_task_PEA"][0:5]
 dfvariables_Sorting_PEA = copy.copy(
@@ -182,21 +185,25 @@ dfvariables_Sorting_EUG = copy.copy(
 
 for i, variable in enumerate(dfvariables_Sorting_PEA):
     i1 = i + 1
-    dfvariables_Sorting_PEA[variable] = dfvariables_Sorting_PEA[variable].map(f)
+    dfvariables_Sorting_PEA[variable] = dfvariables_Sorting_PEA[variable].map(
+        f)
 
 for i, variable in enumerate(dfvariables_Sorting_EUG):
     i1 = i + 1
-    dfvariables_Sorting_EUG[variable] = dfvariables_Sorting_EUG[variable].map(f)
+    dfvariables_Sorting_EUG[variable] = dfvariables_Sorting_EUG[variable].map(
+        f)
 
 if alternativeOderCounting:
     errordistances_PEA = dfvariables_Sorting_PEA.sum(axis=1)
     errordistances_EUG = dfvariables_Sorting_EUG.sum(axis=1)
 
 else:
-    errordistances_PEA = abs(dfRiechenVerduennungAbstand_imputed[variables_Sorting_PEA] - [1, 2, 3, 4, 5]).sum(axis=1)
-    errordistances_EUG = abs(dfRiechenVerduennungAbstand_imputed[variables_Sorting_EUG] - [1, 2, 3, 4, 5]).sum(axis=1)
-    
-    
+    errordistances_PEA = abs(
+        dfRiechenVerduennungAbstand_imputed[variables_Sorting_PEA] - [1, 2, 3, 4, 5]).sum(axis=1)
+    errordistances_EUG = abs(
+        dfRiechenVerduennungAbstand_imputed[variables_Sorting_EUG] - [1, 2, 3, 4, 5]).sum(axis=1)
+
+
 variables_Discrimination_task = groups_of_nongenerated_variables["Discrimination_task"]
 correct_Discrimination_task = dfRiechenVerduennungAbstand_imputed[variables_Discrimination_task].sum(
     axis=1)
@@ -295,28 +302,33 @@ dfvariables_Sorting_EUG = copy.copy(
 
 for i, variable in enumerate(dfvariables_Sorting_PEA):
     i1 = i + 1
-    dfvariables_Sorting_PEA[variable] = dfvariables_Sorting_PEA[variable].map(f)
+    dfvariables_Sorting_PEA[variable] = dfvariables_Sorting_PEA[variable].map(
+        f)
 
 for i, variable in enumerate(dfvariables_Sorting_EUG):
     i1 = i + 1
-    dfvariables_Sorting_EUG[variable] = dfvariables_Sorting_EUG[variable].map(f)
+    dfvariables_Sorting_EUG[variable] = dfvariables_Sorting_EUG[variable].map(
+        f)
 
 if alternativeOderCounting:
     errordistances_PEA_raw = dfvariables_Sorting_PEA.sum(axis=1)
     errordistances_EUG_raw = dfvariables_Sorting_EUG.sum(axis=1)
 
 else:
-    errordistances_PEA_raw = abs(dfRiechenVerduennungAbstand_imputed[variables_Sorting_PEA] - [1, 2, 3, 4, 5]).sum(axis=1)
-    errordistances_EUG_raw = abs(dfRiechenVerduennungAbstand_imputed[variables_Sorting_EUG] - [1, 2, 3, 4, 5]).sum(axis=1)
- 
-    
+    errordistances_PEA_raw = abs(
+        dfRiechenVerduennungAbstand_imputed[variables_Sorting_PEA] - [1, 2, 3, 4, 5]).sum(axis=1)
+    errordistances_EUG_raw = abs(
+        dfRiechenVerduennungAbstand_imputed[variables_Sorting_EUG] - [1, 2, 3, 4, 5]).sum(axis=1)
+
+
 variables_Discrimination_task = groups_of_nongenerated_variables["Discrimination_task"]
 dfvariables_Discrimination_task_raw = copy.copy(
     dfRiechenVerduennungAbstand[variables_Discrimination_task])
 correct_Discrimination_task_raw = dfvariables_Discrimination_task_raw.sum(
     axis=1)
 
-dfRiechenVerduennungAbstand_raw_values_of_analyzed_variables =  dfRiechenVerduennungAbstand[raw_values_of_analyzed_variables1].copy()
+dfRiechenVerduennungAbstand_raw_values_of_analyzed_variables = dfRiechenVerduennungAbstand[raw_values_of_analyzed_variables1].copy(
+)
 
 dfRiechenVerduennungAbstand_raw_values_of_analyzed_variables[
     "errordistances_PEA"] = errordistances_PEA_raw
@@ -330,16 +342,16 @@ X_rawplot.columns
 
 variables_rename_key = {"Thr": "olfthresh", "log Thr": "log olfthresh", "Dis": "olfdis", "Id": "olfident", "ImportofO_Evaluation": "Importance of evaluation",
                         "ImportofO_Application": "Importance of application", "ImportofO_Consequence": "Importance of consequence",
-                        "errordistances_PEA": "Score PEA", "errordistances_EUG": "Score EUG", 
+                        "errordistances_PEA": "Score PEA", "errordistances_EUG": "Score EUG",
                         "errordistances_PEA_timecorrected": "Score PEA time corrected", "errordistances_EUG_timecorrected": "Score EUG time corrected",
                         "correct_PEA": "Correct PEA", "correct_EUG": "Correct EUG",
                         "Dilution series PEA time required in s": "PEA order time", "euc Dilution series time": "EUG order time",
                         "Lat correct assignments overall": "Correct lateralisations", "correct_Discrimination_task": "Correct enantiomer discriminations",
                         "sex_0f": "Sex", "An0_Hyp1_Norm2": "Olf. diagnosis"}
 
-X_rawplot.rename (columns = variables_rename_key ,inplace = True)
+X_rawplot.rename(columns=variables_rename_key, inplace=True)
 X_rawplot.columns
-    
+
 with sns.axes_style("darkgrid"):
     figData = plt.figure(figsize=(25, 8))
     gs = gridspec.GridSpec(1, 18, figure=figData, wspace=1, hspace=.1)
@@ -412,7 +424,7 @@ with sns.axes_style("darkgrid"):
     ax8.set_title("Later. test")
     sns.swarmplot(ax=ax8, data=X_rawplot[[
                   "Correct lateralisations"]], size=3, color="dodgerblue")
-    
+
     sns.violinplot(ax=ax9, data=X_rawplot[[
                    "Correct enantiomer discriminations"]], saturation=1, color="chartreuse", linewidth=0.1)
     ax9.set_ylabel("Score")
@@ -432,7 +444,7 @@ with sns.axes_style("darkgrid"):
 
 # %% Create final data for further anaylsis
 FinalDataSetPreprocessed = dfRiechenVerduennungAbstand_imputed_analyzed.copy()
-FinalDataSetPreprocessed.rename (columns = variables_rename_key ,inplace = True)
+FinalDataSetPreprocessed.rename(columns=variables_rename_key, inplace=True)
 FinalDataSetPreprocessed.columns
 
 

@@ -50,4 +50,3 @@ contigency = pd.crosstab(
     dfRiechenVerduennungAbstand['sex_0f'], Normosmia_vs_hyposmia_Data['Olf. diagnosis'])
 contigency
 c, p, dof, expected = chi2_contingency(contigency)
-

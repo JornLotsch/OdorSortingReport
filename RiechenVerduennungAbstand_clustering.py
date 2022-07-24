@@ -24,6 +24,8 @@ import string
 from RiechenVerduennungAbstand_correlationsPCA import PCA_data
 
 # %%Functions
+
+
 def annotate_axes(ax, text, fontsize=18):
     ax.text(-.021, .95, text, transform=ax.transAxes,
             ha="center", va="center", fontsize=fontsize, color="black")
@@ -92,8 +94,8 @@ colors = ['dodgerblue', '#4b9c00', '#2095DF']
 df['c'] = [colors[i] for i in df["cluster"].values]
 #df['c'] = df.cluster.map({0:colors[0], 1:colors[1], 2:colors[2]})
 
-#%% Plot clusters
-#https://towardsdatascience.com/visualizing-clusters-with-pythons-matplolib-35ae03d87489
+# %% Plot clusters
+# https://towardsdatascience.com/visualizing-clusters-with-pythons-matplolib-35ae03d87489
 
 with sns.axes_style("darkgrid"):
     fig = plt.figure(figsize=(15, 10))
@@ -159,7 +161,7 @@ with sns.axes_style("darkgrid"):
     ax2.axvline(mean_sil, color="salmon", linestyle="dotted")
     ax2.text(1.05*mean_sil, 0.9 * ax2.get_ylim()[1], "Average silhouette width: " + "{:.3f}".format(mean_sil),
              rotation=90, va="center_baseline", color="black")
-#%% Cluster stability etc
+# %% Cluster stability etc
 
 df2 = df.iloc[:, :7].to_numpy()
 
