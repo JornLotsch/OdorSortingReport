@@ -16,8 +16,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from compute_PCA import perform_pca
-from ABCanalysis import ABC_analysis
-
+from cABCanalysis import  cABCanalysis
 from RiechenVerduennungAbstand_readandexploredata import FinalDataSetPreprocessed
 from RiechenVerduennungAbstand_readandexploredata import dfRiechenVerduennungAbstand
 from RiechenVerduennungAbstand_readandexploredata import groups_of_analyzed_variables
@@ -90,4 +89,4 @@ y2 = dfRiechenVerduennungAbstand["An0_Hyp1_Norm2"]
 
 PCA_olfactory, PCA_olfactory_feature_importance = perform_pca(
     PCA_data, target=y2, PC_criterion="KaiserGuttman", plotReduced=1)
-PCA_features = ABC_analysis(PCA_olfactory_feature_importance)
+PCA_features =  cABCanalysis(PCA_olfactory_feature_importance)
