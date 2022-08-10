@@ -17,8 +17,7 @@ from statsmodels.graphics.mosaicplot import mosaic
 from sklearn.preprocessing import StandardScaler
 from scipy.stats import chi2_contingency
 import matplotlib.gridspec as gridspec
-from ABCanalysis import ABC_analysis
-
+from cABCanalysis import  cABCanalysis
 from RiechenVerduennungAbstand_correlationsPCA import DataForCorrelationPCA
 from RiechenVerduennungAbstand_clustering import cluster_labels
 from RiechenVerduennungAbstand_readandexploredata import dfRiechenVerduennungAbstand
@@ -80,7 +79,7 @@ df_cohend_ABC = df_cohend_clusters.copy()
 df_cohend_ABC["Cohens' d"] = df_cohend_ABC["Cohens' d"].abs()
 df_cohend_ABC.set_index("variable", inplace=True)
 df_cohend_ABC.sort_values(by="Cohens' d", inplace=True, ascending=False)
-ABC_analysis(data=df_cohend_ABC["Cohens' d"])
+ cABCanalysis(data=df_cohend_ABC["Cohens' d"])
 
 df3_long = pd.melt(df3, "cluster", var_name="variable", value_name="value")
 
@@ -110,7 +109,7 @@ with sns.axes_style("darkgrid"):
     ax1.set_xticklabels(ax1.get_xticklabels(), rotation=90)
     g.legend(loc='lower left')
 
-    ABC_A_varimportance_Cohen = ABC_analysis(
+    ABC_A_varimportance_Cohen =  cABCanalysis(
         ax=ax4, data=df_cohend_ABC["Cohens' d"], PlotIt=True)["ABlimit"]
     barcols = ["dodgerblue" if abs(
         i) < ABC_A_varimportance_Cohen else "blue" for i in df_cohend_clusters["Cohens' d"]]
@@ -210,7 +209,7 @@ with sns.axes_style("darkgrid"):
     for i, ax in enumerate(axes):
         annotate_axes(ax,  str(string.ascii_lowercase[i]) + ")")
 
-    ABC_A_varimportance_d_cluster_not_olfdiag = ABC_analysis(
+    ABC_A_varimportance_d_cluster_not_olfdiag =  cABCanalysis(
         ax=ax1, data=df_cohend_ABC_d_cluster_not_olfdiag["d_cluster_not_olfdiag"], PlotIt=True)
     ax1.set_title("ABC plot")
 

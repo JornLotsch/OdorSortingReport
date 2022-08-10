@@ -19,8 +19,7 @@ from sklearn.model_selection import train_test_split, RepeatedStratifiedKFold, c
 from sklearn.svm import LinearSVC
 from sklearn.feature_selection import SelectFromModel, RFE, SequentialFeatureSelector, SelectKBest, f_classif
 from sklearn.ensemble import RandomForestClassifier
-from ABCanalysis import ABC_analysis
-from sklearn.linear_model import LogisticRegression
+from cABCanalysis import  cABCanalysisfrom sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.calibration import CalibratedClassifierCV
@@ -155,7 +154,7 @@ for train_index, test_index in rskf.split(X_train, y_train):
     df_chd.set_index("variable", inplace=True)
 
     df_chd["Cohens' d"] = chd
-    features_CohenD.append(ABC_analysis(
+    features_CohenD.append( cABCanalysis(
         data=df_chd["Cohens' d"])["Aind"].index)
 
 features_CohenD_all = []
@@ -165,7 +164,7 @@ for i in range(len(features_CohenD)):
 features_CohenD_all = pd.DataFrame(
     {"Counts":  pd.DataFrame(features_CohenD_all).value_counts()})
 features_CohenD_all.reset_index()
-ABCres = ABC_analysis(features_CohenD_all.iloc[:, 0])
+ABCres =  cABCanalysis(features_CohenD_all.iloc[:, 0])
 ABCres["Aind"].reset_index(inplace=True)
 feature_table.loc[ABCres["Aind"].iloc[:, 0].tolist(), "features_CohenD"] = 1
 
@@ -236,7 +235,7 @@ for i in range(len(features_lSVC_sKb)):
 features_lSVC_sKb_all = pd.DataFrame(
     {"Counts":  pd.DataFrame(features_lSVC_sKb_all).value_counts()})
 features_lSVC_sKb_all.reset_index()
-ABCres = ABC_analysis(features_lSVC_sKb_all.iloc[:, 0])
+ABCres =  cABCanalysis(features_lSVC_sKb_all.iloc[:, 0])
 ABCres["Aind"].reset_index(inplace=True)
 feature_table.loc[ABCres["Aind"].iloc[:, 0].tolist(), "features_lSVC_sKb"] = 1
 
@@ -247,7 +246,7 @@ for i in range(len(features_RF_sKb)):
 features_RF_sKb_all = pd.DataFrame(
     {"Counts":  pd.DataFrame(features_RF_sKb_all).value_counts()})
 features_RF_sKb_all.reset_index()
-ABCres = ABC_analysis(features_RF_sKb_all.iloc[:, 0])
+ABCres =  cABCanalysis(features_RF_sKb_all.iloc[:, 0])
 ABCres["Aind"].reset_index(inplace=True)
 feature_table.loc[ABCres["Aind"].iloc[:, 0].tolist(), "features_RF_sKb"] = 1
 
@@ -258,7 +257,7 @@ for i in range(len(features_LogReg_sKb)):
 features_LogReg_sKb_all = pd.DataFrame(
     {"Counts":  pd.DataFrame(features_LogReg_sKb_all).value_counts()})
 features_LogReg_sKb_all.reset_index()
-ABCres = ABC_analysis(features_LogReg_sKb_all.iloc[:, 0])
+ABCres =  cABCanalysis(features_LogReg_sKb_all.iloc[:, 0])
 ABCres["Aind"].reset_index(inplace=True)
 feature_table.loc[ABCres["Aind"].iloc[:,
                                       0].tolist(), "features_LogReg_sKb"] = 1
@@ -315,7 +314,7 @@ for i in range(len(features_lSVC_sfm)):
 features_lSVC_sfm_all = pd.DataFrame(
     {"Counts":  pd.DataFrame(features_lSVC_sfm_all).value_counts()})
 features_lSVC_sfm_all.reset_index()
-ABCres = ABC_analysis(features_lSVC_sfm_all.iloc[:, 0])
+ABCres =  cABCanalysis(features_lSVC_sfm_all.iloc[:, 0])
 ABCres["Aind"].reset_index(inplace=True)
 feature_table.loc[ABCres["Aind"].iloc[:, 0].tolist(), "features_lSVC_sfm"] = 1
 
@@ -326,7 +325,7 @@ for i in range(len(features_RF_sfm)):
 features_RF_sfm_all = pd.DataFrame(
     {"Counts":  pd.DataFrame(features_RF_sfm_all).value_counts()})
 features_RF_sfm_all.reset_index()
-ABCres = ABC_analysis(features_RF_sfm_all.iloc[:, 0])
+ABCres =  cABCanalysis(features_RF_sfm_all.iloc[:, 0])
 ABCres["Aind"].reset_index(inplace=True)
 feature_table.loc[ABCres["Aind"].iloc[:, 0].tolist(), "features_RF_sfm"] = 1
 
@@ -337,7 +336,7 @@ for i in range(len(features_LogReg_sfm)):
 features_LogReg_sfm_all = pd.DataFrame(
     {"Counts":  pd.DataFrame(features_LogReg_sfm_all).value_counts()})
 features_LogReg_sfm_all.reset_index()
-ABCres = ABC_analysis(features_LogReg_sfm_all.iloc[:, 0])
+ABCres =  cABCanalysis(features_LogReg_sfm_all.iloc[:, 0])
 ABCres["Aind"].reset_index(inplace=True)
 feature_table.loc[ABCres["Aind"].iloc[:,
                                       0].tolist(), "features_LogReg_sfm"] = 1
@@ -398,16 +397,16 @@ for train_index, test_index in rskf.split(X_train, y_train):
 
 features_lSVC_rfe_all = features_lSVC_rfe.sum(
     axis=1).sort_values(ascending=False)
-ABCres = ABC_analysis(features_lSVC_rfe_all)
+ABCres =  cABCanalysis(features_lSVC_rfe_all)
 feature_table.loc[ABCres["Aind"].index.tolist(), "features_lSVC_rfe"] = 1
 
 features_RF_rfe_all = features_RF_rfe.sum(axis=1).sort_values(ascending=False)
-ABCres = ABC_analysis(features_RF_rfe_all)
+ABCres =  cABCanalysis(features_RF_rfe_all)
 feature_table.loc[ABCres["Aind"].index.tolist(), "features_RF_rfe"] = 1
 
 features_LogReg_rfe_all = features_LogReg_rfe.sum(
     axis=1).sort_values(ascending=False)
-ABCres = ABC_analysis(features_LogReg_rfe_all)
+ABCres =  cABCanalysis(features_LogReg_rfe_all)
 feature_table.loc[ABCres["Aind"].index.tolist(), "features_LogReg_rfe"] = 1
 
 features_RFE = pd.concat({"SVM": features_lSVC_rfe_all,
@@ -460,7 +459,7 @@ for i in range(len(features_lSVC_sfs_forward)):
 features_lSVC_sfs_forward_all = pd.DataFrame(
     {"Counts":  pd.DataFrame(features_lSVC_sfs_forward_all).value_counts()})
 features_lSVC_sfs_forward_all.reset_index()
-ABCres = ABC_analysis(features_lSVC_sfs_forward_all.iloc[:, 0])
+ABCres =  cABCanalysis(features_lSVC_sfs_forward_all.iloc[:, 0])
 ABCres["Aind"].reset_index(inplace=True)
 feature_table.loc[ABCres["Aind"].iloc[:,
                                       0].tolist(), "features_lSVC_sfs_forward"] = 1
@@ -472,7 +471,7 @@ for i in range(len(features_RF_sfs_forward)):
 features_RF_sfs_forward_all = pd.DataFrame(
     {"Counts":  pd.DataFrame(features_RF_sfs_forward_all).value_counts()})
 features_RF_sfs_forward_all.reset_index()
-ABCres = ABC_analysis(features_RF_sfs_forward_all.iloc[:, 0])
+ABCres =  cABCanalysis(features_RF_sfs_forward_all.iloc[:, 0])
 ABCres["Aind"].reset_index(inplace=True)
 feature_table.loc[ABCres["Aind"].iloc[:,
                                       0].tolist(), "features_RF_sfs_forward"] = 1
@@ -485,7 +484,7 @@ for i in range(len(features_LogReg_sfs_forward)):
 features_LogReg_sfs_forward_all = pd.DataFrame(
     {"Counts":  pd.DataFrame(features_LogReg_sfs_forward_all).value_counts()})
 features_LogReg_sfs_forward_all.reset_index()
-ABCres = ABC_analysis(features_LogReg_sfs_forward_all.iloc[:, 0])
+ABCres =  cABCanalysis(features_LogReg_sfs_forward_all.iloc[:, 0])
 ABCres["Aind"].reset_index(inplace=True)
 feature_table.loc[ABCres["Aind"].iloc[:,
                                       0].tolist(), "features_LogReg_sfs_forward"] = 1
@@ -548,7 +547,7 @@ for i in range(len(features_lSVC_sfs_backward)):
 features_lSVC_sfs_backward_all = pd.DataFrame(
     {"Counts":  pd.DataFrame(features_lSVC_sfs_backward_all).value_counts()})
 features_lSVC_sfs_backward_all.reset_index()
-ABCres = ABC_analysis(features_lSVC_sfs_backward_all.iloc[:, 0])
+ABCres =  cABCanalysis(features_lSVC_sfs_backward_all.iloc[:, 0])
 ABCres["Aind"].reset_index(inplace=True)
 feature_table.loc[ABCres["Aind"].iloc[:,
                                       0].tolist(), "features_lSVC_sfs_backward"] = 1
@@ -560,7 +559,7 @@ for i in range(len(features_RF_sfs_backward)):
 features_RF_sfs_backward_all = pd.DataFrame(
     {"Counts":  pd.DataFrame(features_RF_sfs_backward_all).value_counts()})
 features_RF_sfs_backward_all.reset_index()
-ABCres = ABC_analysis(features_RF_sfs_backward_all.iloc[:, 0])
+ABCres =  cABCanalysis(features_RF_sfs_backward_all.iloc[:, 0])
 ABCres["Aind"].reset_index(inplace=True)
 feature_table.loc[ABCres["Aind"].iloc[:,
                                       0].tolist(), "features_RF_sfs_backward"] = 1
@@ -573,7 +572,7 @@ for i in range(len(features_LogReg_sfs_backward)):
 features_LogReg_sfs_backward_all = pd.DataFrame(
     {"Counts":  pd.DataFrame(features_LogReg_sfs_backward_all).value_counts()})
 features_LogReg_sfs_backward_all.reset_index()
-ABCres = ABC_analysis(features_LogReg_sfs_backward_all.iloc[:, 0])
+ABCres =  cABCanalysis(features_LogReg_sfs_backward_all.iloc[:, 0])
 ABCres["Aind"].reset_index(inplace=True)
 feature_table.loc[ABCres["Aind"].iloc[:,
                                       0].tolist(), "features_LogReg_sfs_backward"] = 1
@@ -614,9 +613,9 @@ with sns.axes_style("darkgrid"):
     for i, ax in enumerate(axes):
         annotate_axes(ax,  str(string.ascii_lowercase[i]) + ")")
 
-    ABC_A_FS_sumscore = ABC_analysis(
+    ABC_A_FS_sumscore =  cABCanalysis(
         ax=ax1, data=FS_sumscore_cluster, PlotIt=True)
-    ABC_A_FS_sumscore_nested = ABC_analysis(ABC_A_FS_sumscore["Aind"]["value"])
+    ABC_A_FS_sumscore_nested =  cABCanalysis(ABC_A_FS_sumscore["Aind"]["value"])
 
     barcols = ["dodgerblue" if (i) < ABC_A_FS_sumscore["ABlimit"] else "blue" if i <
                ABC_A_FS_sumscore_nested["ABlimit"] else "blue" for i in FS_sumscore_cluster]
@@ -639,9 +638,9 @@ with sns.axes_style("darkgrid"):
     for i, ax in enumerate(axes):
         annotate_axes(ax,  str(string.ascii_lowercase[i]) + ")")
 
-    ABC_A_FS_sumscore = ABC_analysis(
+    ABC_A_FS_sumscore =  cABCanalysis(
         ax=ax1, data=FS_sumscore_cluster, PlotIt=True)
-    ABC_A_FS_sumscore_nested = ABC_analysis(
+    ABC_A_FS_sumscore_nested =  cABCanalysis(
         ax=ax3, data=ABC_A_FS_sumscore["Aind"]["value"], PlotIt=True)
 
     barcols = ["dodgerblue" if (i) < ABC_A_FS_sumscore["ABlimit"] else "blue" if i <
